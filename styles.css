@@ -1,4 +1,42 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav input[type="text"] {
+    width: 50%;
+    padding: 0.5em;
+    font-size: 1em;
+}
+
+nav button {
+    padding: 0.5em;
+    font-size: 1em;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+iframe {
+    width: 80%;
+    height: 80%;
+    border: none;
 }
