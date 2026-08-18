@@ -1,860 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#111827">
-<title>Private Browser V1</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1020">
 
-<style>
-:root {
-  --bg:#0b1020;
-  --panel:#111827;
-  --panel2:#172033;
-  --text:#f8fafc;
-  --muted:#94a3b8;
-  --border:#263247;
-  --accent:#6366f1;
-}
+  <title>Private Browser V2</title>
 
-* {
-  box-sizing:border-box;
-}
-
-html,body {
-  margin:0;
-  width:100%;
-  height:100%;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-
-body {
-  overflow:hidden;
-}
-
-button,input {
-  font:inherit;
-}
-
-button {
-  border:0;
-  cursor:pointer;
-  color:inherit;
-}
-
-.app {
-  height:100%;
-  display:flex;
-  flex-direction:column;
-}
-
-.topbar {
-  padding:12px;
-  background:rgba(17,24,39,.96);
-  border-bottom:1px solid var(--border);
-}
-
-.toolbar {
-  display:flex;
-  align-items:center;
-  gap:7px;
-  max-width:1300px;
-  margin:auto;
-}
-
-.icon-btn {
-  width:42px;
-  height:42px;
-  border-radius:12px;
-  background:var(--panel2);
-  display:grid;
-  place-items:center;
-  font-size:20px;
-  flex:none;
-}
-
-.icon-btn:hover {
-  background:#202b42;
-}
-
-.address-wrap {
-  flex:1;
-  min-width:0;
-  height:42px;
-  display:flex;
-  align-items:center;
-  background:#0b1220;
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:0 13px;
-}
-
-.lock {
-  margin-right:8px;
-}
-
-#address {
-  flex:1;
-  min-width:0;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:var(--text);
-}
-
-.go-btn {
-  background:var(--accent);
-  border-radius:10px;
-  padding:7px 12px;
-  font-weight:700;
-}
-
-.tabs {
-  display:flex;
-  gap:7px;
-  overflow:auto;
-  padding-top:9px;
-  max-width:1300px;
-  margin:auto;
-}
-
-.tab {
-  min-width:170px;
-  height:36px;
-  padding:0 9px 0 12px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  border:1px solid var(--border);
-  border-radius:10px 10px 0 0;
-  background:#0d1525;
-  color:var(--muted);
-}
-
-.tab.active {
-  background:var(--panel2);
-  color:var(--text);
-  border-bottom-color:var(--accent);
-}
-
-.tab-title {
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  flex:1;
-}
-
-.tab-close {
-  width:24px;
-  height:24px;
-  border-radius:7px;
-  background:transparent;
-}
-
-.content {
-  flex:1;
-  min-height:0;
-}
-
-.page {
-  width:100%;
-  height:100%;
-  overflow:auto;
-  display:none;
-}
-
-.page.active {
-  display:block;
-}
-
-.home {
-  min-height:100%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:30px 20px 80px;
-  background:
-    radial-gradient(
-      circle at 50% 20%,
-      rgba(99,102,241,.18),
-      transparent 34%
-    ),
-    var(--bg);
-}
-
-.logo {
-  font-size:62px;
-}
-
-h1 {
-  margin:0;
-  font-size:36px;
-}
-
-.tagline {
-  color:var(--muted);
-  margin:8px 0 25px;
-  text-align:center;
-}
-
-.home-search {
-  width:min(760px,100%);
-  display:flex;
-  gap:8px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  padding:8px;
-  border-radius:18px;
-}
-
-.home-search input {
-  flex:1;
-  min-width:0;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:var(--text);
-  padding:0 10px;
-}
-
-.search-button {
-  background:var(--accent);
-  padding:0 18px;
-  border-radius:12px;
-  font-weight:700;
-}
-
-.quick {
-  width:min(760px,100%);
-  margin-top:22px;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-}
-
-.quick button {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:15px 8px;
-}
-
-.quick button span {
-  display:block;
-  font-size:22px;
-  margin-bottom:5px;
-}
-
-.privacy-card {
-  margin-top:24px;
-  width:min(760px,100%);
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:17px;
-  color:var(--muted);
-}
-
-.welcome {
-  height:100%;
-  display:grid;
-  place-items:center;
-  padding:30px;
-  text-align:center;
-}
-
-.welcome-box {
-  max-width:650px;
-}
-
-.welcome-box .big {
-  font-size:54px;
-}
-
-.welcome-box p {
-  color:var(--muted);
-  line-height:1.6;
-}
-
-.external {
-  display:inline-block;
-  margin-top:10px;
-  padding:11px 16px;
-  border-radius:12px;
-  background:var(--accent);
-  color:white;
-  text-decoration:none;
-  font-weight:700;
-}
-
-.bottom {
-  position:absolute;
-  left:50%;
-  bottom:14px;
-  transform:translateX(-50%);
-  background:rgba(17,24,39,.92);
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:8px 13px;
-  color:var(--muted);
-  font-size:12px;
-}
-
-@media(max-width:700px) {
-
-  .toolbar {
-    gap:5px;
-  }
-
-  .icon-btn {
-    width:38px;
-    height:38px;
-  }
-
-  .address-wrap {
-    height:38px;
-  }
-
-  .quick {
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  h1 {
-    font-size:30px;
-  }
-}
-</style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="app">
+  <div class="app">
 
-<header class="topbar">
+    <!-- TOP BAR -->
+    <header class="topbar">
 
-<div class="toolbar">
+      <div class="toolbar">
 
-<button class="icon-btn" id="back">‹</button>
+        <button class="icon-btn" id="back" title="Back">
+          ‹
+        </button>
 
-<button class="icon-btn" id="forward">›</button>
+        <button class="icon-btn" id="forward" title="Forward">
+          ›
+        </button>
 
-<button class="icon-btn" id="reload">↻</button>
+        <button class="icon-btn" id="reload" title="Reload">
+          ↻
+        </button>
 
-<button class="icon-btn" id="homeBtn">⌂</button>
+        <button class="icon-btn" id="homeBtn" title="Home">
+          ⌂
+        </button>
 
-<div class="address-wrap">
+        <div class="address-wrap">
 
-<span class="lock">🔒</span>
+          <span class="lock">
+            🔒
+          </span>
 
-<input
-id="address"
-autocomplete="off"
-spellcheck="false"
-placeholder="Search or enter a web address"
->
+          <input
+            id="address"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Search or enter a web address"
+          >
 
-<button class="go-btn" id="go">
-Go
-</button>
+          <button class="go-btn" id="go">
+            Go
+          </button>
 
-</div>
+        </div>
 
-<button class="icon-btn" id="newTab">
-＋
-</button>
+        <button class="icon-btn" id="newTab" title="New Tab">
+          ＋
+        </button>
 
-</div>
+        <button class="icon-btn" id="settingsBtn" title="Settings">
+          ⚙
+        </button>
 
-<div class="tabs" id="tabs"></div>
+      </div>
 
-</header>
+      <!-- TABS -->
+      <div class="tabs" id="tabs"></div>
 
-<main class="content" id="content"></main>
+    </header>
 
-<div class="bottom">
-🕵️ Private Browser V1
-</div>
+    <!-- PAGE CONTENT -->
+    <main class="content" id="content"></main>
 
-</div>
+    <!-- STATUS -->
+    <div class="status">
+      🕵️ Private Browser V2
+    </div>
 
-<script>
+  </div>
 
-const address = document.getElementById("address");
-const content = document.getElementById("content");
-const tabsElement = document.getElementById("tabs");
+  <!-- SETTINGS MODAL -->
+  <div class="modal" id="settingsModal">
 
-let tabs = [];
-let activeTabId = null;
+    <div class="modal-box">
 
-function createId() {
+      <div class="modal-header">
 
-  return Date.now().toString(36) +
-    Math.random().toString(36).slice(2);
+        <h2>
+          Browser Settings
+        </h2>
 
-}
+        <button
+          class="close-btn"
+          id="closeSettings"
+        >
+          ✕
+        </button>
 
-function createTab() {
+      </div>
 
-  const tab = {
+      <div class="settings-content">
 
-    id:createId(),
+        <div class="setting-row">
 
-    title:"New Tab",
+          <div>
+            <strong>
+              Theme
+            </strong>
 
-    url:"",
+            <p>
+              Switch between dark and light mode.
+            </p>
+          </div>
 
-    history:[""],
+          <button
+            class="setting-button"
+            id="themeToggle"
+          >
+            🌙
+          </button>
 
-    historyIndex:0
+        </div>
 
-  };
+        <div class="setting-row">
 
-  tabs.push(tab);
+          <div>
+            <strong>
+              Clear Session
+            </strong>
 
-  activeTabId = tab.id;
+            <p>
+              Close all tabs and reset the browser.
+            </p>
+          </div>
 
-  render();
+          <button
+            class="danger-button"
+            id="clearSession"
+          >
+            Clear
+          </button>
 
-}
+        </div>
 
-function getActiveTab() {
+        <div class="about">
 
-  return tabs.find(
-    tab => tab.id === activeTabId
-  );
+          <strong>
+            Private Browser V2
+          </strong>
 
-}
+          <p>
+            A GitHub-hosted browser interface.
+          </p>
 
-function getHomePage() {
+          <p>
+            V2 is a browser shell and does not
+            provide VPN-level anonymity.
+          </p>
 
-return `
+        </div>
 
-<section class="home">
+      </div>
 
-<div class="logo">
-🕵️
-</div>
+    </div>
 
-<h1>
-Private Browser
-</h1>
+  </div>
 
-<div class="tagline">
-A simple private browser for your GitHub platform.
-</div>
-
-<div class="home-search">
-
-<input
-id="homeSearch"
-placeholder="Search or enter a web address"
->
-
-<button
-class="search-button"
-id="homeGo"
->
-Search
-</button>
-
-</div>
-
-<div class="quick">
-
-<button data-url="https://www.google.com">
-<span>🔎</span>
-Google
-</button>
-
-<button data-url="https://www.bing.com">
-<span>🟦</span>
-Bing
-</button>
-
-<button data-url="https://duckduckgo.com">
-<span>🦆</span>
-DuckDuckGo
-</button>
-
-<button data-url="https://github.com">
-<span>🐙</span>
-GitHub
-</button>
-
-</div>
-
-<div class="privacy-card">
-
-<strong>🕵️ Private Session</strong>
-
-<br><br>
-
-Your tabs and browsing state are kept in memory
-while this page is open.
-
-<br><br>
-
-This is not a VPN and does not hide your network
-traffic from your internet provider.
-
-</div>
-
-</section>
-
-`;
-
-}
-
-function getWebsitePage(url) {
-
-return `
-
-<section class="welcome">
-
-<div class="welcome-box">
-
-<div class="big">
-🌐
-</div>
-
-<h2>
-Ready to visit
-</h2>
-
-<p>
-${url}
-</p>
-
-<p>
-
-GitHub-hosted webpages cannot display many
-external websites inside an iframe because those
-websites block embedding.
-
-</p>
-
-<a
-class="external"
-href="${url}"
-target="_blank"
-rel="noopener noreferrer"
->
-Open Website ↗
-</a>
-
-</div>
-
-</section>
-
-`;
-
-}
-
-function render() {
-
-  tabsElement.innerHTML = "";
-
-  tabs.forEach(tab => {
-
-    const element =
-      document.createElement("div");
-
-    element.className =
-      "tab" +
-      (tab.id === activeTabId
-        ? " active"
-        : "");
-
-    element.innerHTML = `
-
-      <span>🕵️</span>
-
-      <span class="tab-title"></span>
-
-      <button class="tab-close">
-        ✕
-      </button>
-
-    `;
-
-    element.querySelector(".tab-title")
-      .textContent = tab.title;
-
-    element.addEventListener("click", event => {
-
-      if (
-        event.target.closest(".tab-close")
-      ) return;
-
-      activeTabId = tab.id;
-
-      render();
-
-    });
-
-    element.querySelector(".tab-close")
-      .addEventListener("click", event => {
-
-        event.stopPropagation();
-
-        closeTab(tab.id);
-
-      });
-
-    tabsElement.appendChild(element);
-
-  });
-
-  content.innerHTML = "";
-
-  const tab = getActiveTab();
-
-  const page =
-    document.createElement("div");
-
-  page.className = "page active";
-
-  if (!tab.url) {
-
-    page.innerHTML =
-      getHomePage();
-
-    const search =
-      page.querySelector("#homeSearch");
-
-    page.querySelector("#homeGo")
-      .onclick = () => {
-
-        navigate(search.value);
-
-      };
-
-    search.onkeydown = event => {
-
-      if (event.key === "Enter") {
-
-        navigate(search.value);
-
-      }
-
-    };
-
-    page.querySelectorAll("[data-url]")
-      .forEach(button => {
-
-        button.onclick = () => {
-
-          navigate(button.dataset.url);
-
-        };
-
-      });
-
-  } else {
-
-    page.innerHTML =
-      getWebsitePage(tab.url);
-
-  }
-
-  content.appendChild(page);
-
-  address.value = tab.url;
-
-}
-
-function normalize(input) {
-
-  input = input.trim();
-
-  if (!input) return "";
-
-  if (
-    /^https?:\/\//i.test(input)
-  ) {
-
-    return input;
-
-  }
-
-  if (
-    /^[a-z0-9.-]+\.[a-z]{2,}/i.test(input)
-  ) {
-
-    return "https://" + input;
-
-  }
-
-  return (
-    "https://duckduckgo.com/?q=" +
-    encodeURIComponent(input)
-  );
-
-}
-
-function navigate(input) {
-
-  const url = normalize(input);
-
-  if (!url) return;
-
-  const tab = getActiveTab();
-
-  tab.url = url;
-
-  try {
-
-    tab.title =
-      new URL(url).hostname;
-
-  } catch {
-
-    tab.title =
-      "Web Page";
-
-  }
-
-  tab.history =
-    tab.history.slice(
-      0,
-      tab.historyIndex + 1
-    );
-
-  tab.history.push(url);
-
-  tab.historyIndex =
-    tab.history.length - 1;
-
-  render();
-
-}
-
-function goHome() {
-
-  const tab = getActiveTab();
-
-  tab.url = "";
-
-  tab.title = "New Tab";
-
-  tab.history = [""];
-
-  tab.historyIndex = 0;
-
-  render();
-
-}
-
-function goBack() {
-
-  const tab = getActiveTab();
-
-  if (
-    tab.historyIndex <= 0
-  ) return;
-
-  tab.historyIndex--;
-
-  tab.url =
-    tab.history[
-      tab.historyIndex
-    ];
-
-  render();
-
-}
-
-function goForward() {
-
-  const tab = getActiveTab();
-
-  if (
-    tab.historyIndex >=
-    tab.history.length - 1
-  ) return;
-
-  tab.historyIndex++;
-
-  tab.url =
-    tab.history[
-      tab.historyIndex
-    ];
-
-  render();
-
-}
-
-function closeTab(id) {
-
-  const index =
-    tabs.findIndex(
-      tab => tab.id === id
-    );
-
-  if (index === -1) return;
-
-  tabs.splice(index,1);
-
-  if (tabs.length === 0) {
-
-    createTab();
-
-    return;
-
-  }
-
-  if (activeTabId === id) {
-
-    activeTabId =
-      tabs[Math.max(0,index - 1)].id;
-
-  }
-
-  render();
-
-}
-
-document.getElementById("go")
-  .onclick = () => {
-
-    navigate(address.value);
-
-  };
-
-address.addEventListener(
-  "keydown",
-  event => {
-
-    if (event.key === "Enter") {
-
-      navigate(address.value);
-
-    }
-
-  }
-);
-
-document.getElementById("back")
-  .onclick = goBack;
-
-document.getElementById("forward")
-  .onclick = goForward;
-
-document.getElementById("homeBtn")
-  .onclick = goHome;
-
-document.getElementById("reload")
-  .onclick = render;
-
-document.getElementById("newTab")
-  .onclick = createTab;
-
-createTab();
-
-</script>
+  <script src="script.js"></script>
 
 </body>
 </html>
